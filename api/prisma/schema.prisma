@@ -24,6 +24,11 @@ model User {
 
     followers User[] @relation("UserFollowers")
     followedBy User[] @relation("UserFollowers")
+
+    likedPosts  Post[] @relation("PostLikes")
+    likedComments    Comment[] @relation("CommentLikes")
+
+    comments    Comment[]
 }
 model Post {
   id        Int     @id @default(autoincrement())
@@ -33,4 +38,30 @@ model Post {
 
   author    User    @relation(fields: [authorId], references: [id])
   authorId  Int
+
+  comments  Comment[]
+  usersLiked  User[]  @relation("PostLikes")
+}
+
+model Comment {
+    id  Int @id @default(autoincrement())
+    content String
+    createdAt   DateTime    @default(now())
+
+    author  User    @relation(fields: [authorId], references: [id])
+    authorId    Int
+
+    postId  Int
+    post    Post    @relation(fields: [postId], references: [id])
+
+    usersLiked  User[]  @relation("CommentLikes")
+}
+
+model Profile {
+    id        Int     @id @default(autoincrement())
+    imageUrl    String?
+
+    userId  Int @unique
+    user    User    @relation("userProfile", fields: [userId], references: [id])
+
 }
