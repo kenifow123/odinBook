@@ -1,5 +1,6 @@
 const { prisma } = require("../lib/prisma.js");
 const bcrypt = require('bcryptjs');
+const jwt = require("jsonwebtoken");
 
 const signupPost = async (req, res) => {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -15,6 +16,7 @@ const signupPost = async (req, res) => {
 }
 
 const loginPost = async (req, res) => {
+    console.log(process.env.DATABASE_URL)
     try {
         const user = await prisma.user.findUnique({
             where: {
@@ -25,9 +27,9 @@ const loginPost = async (req, res) => {
                 followers: true,
                 followedBy: true,
                 likedPosts: true,
-                likeComments: true,
+                likedComments: true,
                 comments: true,
-                posts: true
+                posts: true,
             }
         });
 
@@ -46,7 +48,36 @@ const loginPost = async (req, res) => {
     }
 }
 
+const followRequestPut = async (req, res) => {
+    const followRequest = await prisma.followRequest.create({
+        data: {
+            requesterId: req.user.id,
+            requestedId: Number(req.params.requestedUserId),
+        }
+    })
+
+    res.json(followRequest);
+}
+
+const acceptFollowPut = async (req, res) => {
+    const user = await prisma.user.update({
+        where: {
+            id: req.user.id,
+        },
+        data: {
+            followers: {
+                connect: {
+                    id: req.params.followerUserId,
+                }
+            }
+        }
+    })
+
+    res.json({message: req.user.id + " accepted follower " + req.params.followerUserId});
+}
+
 module.exports = {
     signupPost,
-    loginPost
+    loginPost,
+    followRequestPut,
 };

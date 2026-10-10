@@ -29,7 +29,11 @@ model User {
     likedComments    Comment[] @relation("CommentLikes")
 
     comments    Comment[]
+
+    sentFollowRequests     FollowRequest[] @relation("FollowRequester")
+    receivedFollowRequests FollowRequest[] @relation("FollowRequested")
 }
+
 model Post {
   id        Int     @id @default(autoincrement())
   content   String?
@@ -64,4 +68,16 @@ model Profile {
     userId  Int @unique
     user    User    @relation("userProfile", fields: [userId], references: [id])
 
+}
+
+model FollowRequest {
+    id  Int @id @default(autoincrement())
+
+    requesterId Int
+    requester   User    @relation("FollowRequester", fields: [requesterId], references: [id])
+
+    requestedId Int
+    requested   User    @relation("FollowRequested", fields: [requestedId], references: [id])
+
+    @@unique([requesterId, requestedId])
 }
