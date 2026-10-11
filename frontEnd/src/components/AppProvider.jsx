@@ -1,0 +1,14 @@
+import { createContext, useEffect, useState } from 'react';
+export const AppContext = createContext();
+
+export const AppProvider = ({ children }) => {
+    const [ user, setUser ] = useState(null);
+    const [ jwt, setJwt ] = useState(null);
+    const [ posts, setPosts ] = useState(null);
+    return (
+        <AppContext value={{user, setUser, jwt, setJwt, posts, setPosts }}>
+            {children}
+        </AppContext>
+    )
+}
+

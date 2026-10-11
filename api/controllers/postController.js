@@ -23,8 +23,24 @@ const createPostPost = async (req, res) => {
 
 }
 
-const allPostsGet = async (req, res) => {
-    const response = await prisma.post.findMany();
+const allFollowedPostsGet = async (req, res) => {
+    const response = await prisma.post.findMany({
+        where : {
+            author: {
+                followedBy: {
+                    some: {
+                        id: req.user.id,
+                    }
+                }
+            }
+        },
+        include: {
+            author: true,
+        },
+        orderBy: {
+            createdAt: 'desc',
+        }
+    });
     res.json(response);
 }
 
@@ -41,7 +57,6 @@ const likePostPut = async (req, res) => {
             }
 
         }
-
     })
     res.json(response);
 }
@@ -77,7 +92,7 @@ const likeCommentPut = async (req, res) => {
 
 module.exports = {
     createPostPost,
-    allPostsGet,
+    allFollowedPostsGet,
     likePostPut,
     createCommentPost,
     likeCommentPut,

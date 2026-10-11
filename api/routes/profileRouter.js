@@ -11,4 +11,4 @@ profileRouter.post("/changeProfilePic", passport.authenticate("jwt", upload.sing
 
 
 
-export default profileRouter;
+module.exports = profileRouter;

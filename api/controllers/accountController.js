@@ -16,7 +16,6 @@ const signupPost = async (req, res) => {
 }
 
 const loginPost = async (req, res) => {
-    console.log(process.env.DATABASE_URL)
     try {
         const user = await prisma.user.findUnique({
             where: {
@@ -24,7 +23,7 @@ const loginPost = async (req, res) => {
             },
             include: {
                 profile: true,
-                followers: true,
+                following: true,
                 followedBy: true,
                 likedPosts: true,
                 likedComments: true,
@@ -40,7 +39,7 @@ const loginPost = async (req, res) => {
         }
 
         console.log('Login Successful');
-        jwt.sign({ user}, process.env.JWT_SECRET, {expiresIn: "1h"}, (err, token) => {
+        jwt.sign({ user}, process.env.JWT_SECRET_KEY, {expiresIn: "1h"}, (err, token) => {
             res.json({token, user});
         });
     } catch (error) {
@@ -80,4 +79,5 @@ module.exports = {
     signupPost,
     loginPost,
     followRequestPut,
+    acceptFollowPut,
 };

@@ -22,7 +22,7 @@ model User {
 
     profile       Profile? @relation("userProfile")
 
-    followers User[] @relation("UserFollowers")
+    following User[] @relation("UserFollowers")
     followedBy User[] @relation("UserFollowers")
 
     likedPosts  Post[] @relation("PostLikes")
