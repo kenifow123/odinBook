@@ -37,7 +37,7 @@ const routes = [
             {
                 path: '/createPost',
                 element: <CreatePost/>,
-            }
+            },
         ]
     },
 ]

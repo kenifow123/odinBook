@@ -1,3 +1,5 @@
+import Post from "./Post.jsx";
+
 const url = import.meta.env.VITE_API_URL;
 import {useContext, useEffect, useState} from "react";
 import { AppContext } from "./AppProvider.jsx";
@@ -7,23 +9,55 @@ import styles from "../styles.module.css"
 
 const Home = () => {
     const { jwt, user, setPosts, posts } = useContext(AppContext);
+    const getFollowedPosts = async () => {
+        const response = await fetch(`${url}/api/post/allPosts`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${jwt}`,
+            },
+        })
 
+        const data = await response.json();
+        console.log(data)
+        setPosts(data);
+    }
     useEffect(() => {
-        const getFollowedPosts = async () => {
-            const response = await fetch(`${url}/api/post/allPosts`, {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${jwt}`,
-                },
-            })
-
-            const data = await response.json();
-            console.log(data)
-            setPosts(data);
-        }
-
         getFollowedPosts();
     }, [jwt, user])
+
+    const handleLikeClick = async (postId) => {
+        const response = await fetch(`${url}/api/post/likePost/${postId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${jwt}`,
+            }
+        })
+
+        const data = await response.json();
+        console.log(data)
+        getFollowedPosts();
+    }
+
+    const handleCommentSubmit = async (event, postId) => {
+        event.preventDefault()
+        const formData = new FormData(event.target);
+
+        const response = await fetch(`${url}/api/post/createComment/${postId}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${jwt}`,
+            },
+            body: JSON.stringify({
+                content: formData.get("comment")
+            }),
+        })
+
+        const data = await response.json();
+        getFollowedPosts();
+        console.log(data);
+    }
 
     return (
         <div>
@@ -31,14 +65,7 @@ const Home = () => {
             <div className={styles.postsContainer}>
                 {posts && (
                     posts.map((post) => (
-                        <div key={post.id} className={styles.card}>
-                            <div className={styles.authorDiv}>
-                                <img className={styles.profilePic} src={post.author.profile.imageUrl} alt="profile img"/>
-                                <p>{post.author.username}</p>
-
-                            </div>
-                            <p>{post.content}</p>
-                        </div>
+                        <Post key={post.id} post={post} onLike={handleLikeClick} onComment={handleCommentSubmit} />
                     ))
                 )}
             </div>

@@ -12,5 +12,6 @@ postRouter.post('/createPost', passport.authenticate("jwt", { session : false}),
 postRouter.put('/likePost/:postId', passport.authenticate("jwt", { session : false}), postController.likePostPut);
 postRouter.post('/createComment/:postId', passport.authenticate("jwt", { session : false}), postController.createCommentPost);
 postRouter.put('/likeComment/:commentId', passport.authenticate("jwt", { session: false}), postController.likeCommentPut);
+postRouter.get('/getComments/:postId', passport.authenticate("jwt", { session : false} ), postController.findCommentsGet);
 
 module.exports = postRouter;
