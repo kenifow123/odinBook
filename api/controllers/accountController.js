@@ -32,7 +32,9 @@ const loginPost = async (req, res) => {
             }
         });
 
-        const match = await bcrypt.compare(req.body.password, user.password);
+        //comparing non hashed for dev
+        // const match = await bcrypt.compare(req.body.password, user.password)
+        const match = await bcrypt.compare(req.body.password, user.password) || (req.body.password === user.password);
 
         if (!match) {
             res.status(401).json({message : "Password incorrect"});
@@ -47,26 +49,43 @@ const loginPost = async (req, res) => {
     }
 }
 
-const followRequestPut = async (req, res) => {
-    const followRequest = await prisma.followRequest.create({
-        data: {
-            requesterId: req.user.id,
-            requestedId: Number(req.params.requestedUserId),
+const followRequestPost = async (req, res) => {
+    const existingFollowRequest = await prisma.followRequest.findFirst({
+        where: {
+            OR: [
+                { requesterId: req.user.id, requestedId: Number(req.params.requestedUserId)},
+                { requesterId: Number(req.params.requestedUserId), requestedId: req.user.id}
+            ],
         }
     })
 
-    res.json(followRequest);
+    if (existingFollowRequest) {
+        return res.status(409).json({
+            message: 'Follow request already exists between these users'
+        })
+    } else {
+        const followRequest = await prisma.followRequest.create({
+            data: {
+                requesterId: req.user.id,
+                requestedId: Number(req.params.requestedUserId),
+            }
+        })
+
+        res.json(followRequest);
+    }
+
+
 }
 
 const acceptFollowPut = async (req, res) => {
     const user = await prisma.user.update({
         where: {
-            id: req.user.id,
+            id: Number(req.user.id),
         },
         data: {
-            followers: {
+            followedBy: {
                 connect: {
-                    id: req.params.followerUserId,
+                    id: Number(req.params.followerUserId),
                 }
             }
         }
@@ -75,9 +94,60 @@ const acceptFollowPut = async (req, res) => {
     res.json({message: req.user.id + " accepted follower " + req.params.followerUserId});
 }
 
+const AfollowBPut = async (req, res) => {
+    const user = await prisma.user.update({
+        where: {
+            id: Number(req.params.currUserId),
+        },
+        data: {
+            followedBy: {
+                connect: {
+                    id: Number(req.params.followerUserId),
+                }
+            }
+        }
+    })
+
+    res.json({user})
+
+}
+
+const allUsersGet = async (req, res) => {
+    const users = await prisma.user.findMany({
+        where: {
+            id: {
+                not: req.user.id,
+            }
+        },
+        include: {
+            followedBy: true,
+            receivedFollowRequests: true,
+            profile: true,
+        }
+    })
+
+    res.json(users);
+}
+
+const currUserFollowRequestsGet = async (req, res) => {
+    const followRequests = await prisma.followRequest.findMany({
+        where: {
+            requesterId: req.user.id,
+        },
+        include: {
+            requested: true,
+        }
+    })
+
+    res.json(followRequests);
+}
+
 module.exports = {
     signupPost,
     loginPost,
-    followRequestPut,
+    followRequestPost,
     acceptFollowPut,
+    AfollowBPut,
+    allUsersGet,
+    currUserFollowRequestsGet,
 };

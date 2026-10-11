@@ -35,7 +35,11 @@ const allFollowedPostsGet = async (req, res) => {
             }
         },
         include: {
-            author: true,
+            author: {
+                include: {
+                    profile: true,
+                }
+            },
         },
         orderBy: {
             createdAt: 'desc',

@@ -9,3 +9,26 @@ a {
 .header {
     border: black solid 1px;
 }
+
+.profilePic {
+    max-width: 30px;
+    max-height: 30px;
+    border-radius: 50%;
+}
+
+.authorDiv {
+    display: flex;
+    align-items: center;
+}
+
+.card {
+    border: black solid 1px;
+    border-radius: 10px;
+    max-width: fit-content;
+}
+
+.userPic {
+    max-width: 100px;
+    max-height: 100px;
+    border-radius: 50%;
+}

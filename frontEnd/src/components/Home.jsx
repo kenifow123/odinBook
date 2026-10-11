@@ -1,11 +1,12 @@
 const url = import.meta.env.VITE_API_URL;
-import {useContext, useEffect} from "react";
+import {useContext, useEffect, useState} from "react";
 import { AppContext } from "./AppProvider.jsx";
 import { useNavigate } from "react-router-dom"
+import styles from "../styles.module.css"
 
 
 const Home = () => {
-    const { jwt, user, setPosts } = useContext(AppContext);
+    const { jwt, user, setPosts, posts } = useContext(AppContext);
 
     useEffect(() => {
         const getFollowedPosts = async () => {
@@ -17,7 +18,8 @@ const Home = () => {
             })
 
             const data = await response.json();
-            console.log(data);
+            console.log(data)
+            setPosts(data);
         }
 
         getFollowedPosts();
@@ -26,6 +28,20 @@ const Home = () => {
     return (
         <div>
             <h1>Home - Your Feed</h1>
+            <div className={styles.postsContainer}>
+                {posts && (
+                    posts.map((post) => (
+                        <div key={post.id} className={styles.card}>
+                            <div className={styles.authorDiv}>
+                                <img className={styles.profilePic} src={post.author.profile.imageUrl} alt="profile img"/>
+                                <p>{post.author.username}</p>
+
+                            </div>
+                            <p>{post.content}</p>
+                        </div>
+                    ))
+                )}
+            </div>
         </div>
     )
 }
