@@ -50,6 +50,9 @@ const allFollowedPostsGet = async (req, res) => {
             },
             usersLiked: true,
             comments: {
+                orderBy: {
+                    createdAt: 'desc'
+                },
                 include: {
                     author: {
                         include: {

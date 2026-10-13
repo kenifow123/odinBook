@@ -29,6 +29,8 @@ const Post = ({post, onLike, onComment}) => {
                 </div>
 
                 <p>{formatDate(post.createdAt)}</p>
+
+                <img src={post.imageUrl} alt=""/>
                 <p>{post.content}</p>
 
                 <div className={styles.likesDiv}>

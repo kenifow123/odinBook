@@ -52,30 +52,30 @@ const AllUsers = () => {
     }
 
     return (
-        <div>
+        <div className={styles.allUsersContainer}>
             <h1>All Users</h1>
 
-            <div className={styles.allUsersContainer}>
+            <div className={styles.allUsersDiv}>
                 {allUsers.map((currUser) => (
-                    <div key={currUser.id}>
-                        <div className={styles.card}>
-                            <img className={styles.userPic} src={currUser.profile.imageUrl} alt="profilePic"/>
-                            <p>{currUser.username}</p>
-                            {currUser.followedBy.find(follower => follower.id === user.id) ? (
-                                <p>Already Following</p>
-                            ) : currFollowRequests.find((request) =>
-                                request.requesterId === user.id &&
-                                request.requestedId === currUser.id
-                            ) || requestSent.includes(currUser.id) ? ( <p>Request Already Sent</p>
-                            ) : (
-                                    <button onClick={() => handleSendRequest(currUser.id)}>
-                                        Send Follow Request
-                                    </button>
-                            )}
 
-                        </div>
+                    <div className={styles.card}>
+                        <img className={styles.userPic} src={currUser.profile.imageUrl} alt="profilePic"/>
+                        <p>{currUser.username}</p>
+                        {currUser.followedBy.find(follower => follower.id === user.id) ? (
+                            <p>Already Following</p>
+                        ) : currFollowRequests.find((request) =>
+                            request.requesterId === user.id &&
+                            request.requestedId === currUser.id
+                        ) || requestSent.includes(currUser.id) ? ( <p>Request Already Sent</p>
+                        ) : (
+                                <button onClick={() => handleSendRequest(currUser.id)}>
+                                    Send Follow Request
+                                </button>
+                        )}
 
                     </div>
+
+
                 ))}
             </div>
 

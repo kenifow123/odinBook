@@ -8,6 +8,7 @@ const url = import.meta.env.VITE_API_URL
 
 const Profile = () => {
     const { jwt, user, setUser, posts} = useContext(AppContext);
+    const navigate = useNavigate();
 
     const formatDate = (date) => {
         return new Date(date).toLocaleString([], {
@@ -20,7 +21,6 @@ const Profile = () => {
 
     const handleEditPic = async (event) => {
         event.preventDefault()
-        const navigate = useNavigate();
         const formData = new FormData(event.target);
         const response = await fetch(`${url}/api/profile/changeProfilePic`, {
             method: "POST",
@@ -38,18 +38,22 @@ const Profile = () => {
     }
 
     return (
-        <>
+        <div className={styles.profileContainer}>
             <h1>Profile Page</h1>
             <div className={styles.profileDiv}>
-                <h3>{user.username}</h3>
-                <img src={user.profile?.imageUrl || defaultPic} alt="" className={styles.profileImg}/>
+                <h3>Hello, {user.username}</h3>
+                <div className={styles.editProfilePicDiv}>
+                    <img src={user.profile?.imageUrl || defaultPic} alt="" className={styles.profileImg}/>
 
-                <form onSubmit={handleEditPic}>
-                    <label htmlFor="file">Choose Picture: <input type="file" name="file"/></label>
-                    <button>Upload</button>
-                </form>
+                    <form onSubmit={handleEditPic}>
+                        <label htmlFor="file">Choose Picture: <input type="file" name="file"/></label>
+                        <button>Upload</button>
+                    </form>
+                </div>
 
-                <div className={styles.userPostsContainer}>
+
+
+                <div className={styles.postsContainer}>
                     {posts.map((post) => (
                         (post.authorId === user.id && (
                             <div key={post.id} className={styles.card}>
@@ -70,7 +74,7 @@ const Profile = () => {
 
             </div>
 
-        </>
+        </div>
     )
 }
 
