@@ -6,6 +6,7 @@ import Home from './components/Home.jsx'
 import Authenticated from './components/Authenticated.jsx'
 import AllUsers from "./components/AllUsers.jsx";
 import CreatePost from "./components/CreatePost.jsx";
+import Profile from './components/Profile.jsx'
 
 const routes = [
     {
@@ -38,6 +39,11 @@ const routes = [
                 path: '/createPost',
                 element: <CreatePost/>,
             },
+            {
+                path: '/profile',
+                element: <Profile/>
+            }
+
         ]
     },
 ]

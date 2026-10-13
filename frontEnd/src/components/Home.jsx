@@ -60,7 +60,7 @@ const Home = () => {
     }
 
     return (
-        <div>
+        <div className={styles.homeContainer}>
             <h1>Home - Your Feed</h1>
             <div className={styles.postsContainer}>
                 {posts && (

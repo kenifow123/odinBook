@@ -22,15 +22,16 @@ const createProfilePost = async (req, res) => {
 }
 
 const changeProfilePicPost = async (req, res) => {
-    const imageUrl = cloudinary.getCloudinaryUrl(req.file);
+    const imageUrl = await cloudinary.getCloudinaryUrl(req.file);
     const profile = await prisma.profile.update({
         where: {
             userId: req.user.id,
         },
         data: {
-            imageUrl: req.user.imageUrl,
+            imageUrl: imageUrl,
         }
     })
+    res.json(profile);
 }
 
 module.exports = {
