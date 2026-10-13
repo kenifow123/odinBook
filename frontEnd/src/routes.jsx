@@ -38,6 +38,11 @@ const routes = [
                 path: '/createPost',
                 element: <CreatePost/>,
             },
+            {
+                path: '/profile',
+                element: <Profile/>
+            }
+
         ]
     },
 ]

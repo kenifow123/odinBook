@@ -69,6 +69,7 @@ const Post = ({post, onLike, onComment}) => {
                                         <img className={styles.profilePic} src={comment.author.profile?.imageUrl || defaultAvatar} alt="Profile"/>
                                         <p>{comment.author.username}</p>
                                     </div>
+                                    <p>{formatDate(comment.createdAt)}</p>
                                     <p>{comment.content}</p>
                                 </div>
                             ))
