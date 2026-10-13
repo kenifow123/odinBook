@@ -22,11 +22,13 @@ const Login = () => {
         })
 
         const data = await response.json();
+        console.log(data);
         console.log('login success');
         setJwt(data.token);
         setUser(data.user);
 
         localStorage.setItem('jwt', data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
         navigate('/home')
     }
     return (

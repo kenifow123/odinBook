@@ -5,12 +5,30 @@
     font-family: 'Google Sans', sans-serif;
 }
 
+body {
+    margin: 0;
+}
+
 a {
     text-decoration: none;
 }
 
+h1 {
+    text-align: center;
+}
+
 .header {
-    border: black solid 1px;
+    border-bottom: black solid 1px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: antiquewhite;
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
 }
 
 .profilePic {
@@ -27,7 +45,13 @@ a {
 .card {
     border: black solid 1px;
     border-radius: 10px;
-    max-width: fit-content;
+    width: fit-content;
+    max-width: 500px;
+    padding: 10px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .userPic {
@@ -39,4 +63,35 @@ a {
 .linksDiv {
     display: flex;
     gap: 10px;
+}
+
+.profileImg {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.homeContainer {
+    padding: 10px;
+    background-color: lightgray;
+
+}
+
+
+.postsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.likesDiv {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.likesDiv > button {
+    height: fit-content;
 }

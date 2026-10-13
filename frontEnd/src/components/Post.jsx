@@ -20,23 +20,6 @@ const Post = ({post, onLike, onComment}) => {
         })
     }
 
-    // const getComments = async (postId) => {
-    //     const response = await fetch(`${url}/api/post/getComments/${postId}`, {
-    //         method: "GET",
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //             "Authorization" : `Bearer ${jwt}`,
-    //         }
-    //     })
-    //
-    //     const data = await response.json();
-    //     setComments(data);
-    // }
-
-    // useEffect(() => {
-    //     getComments(post.id);
-    // }, [jwt, user])
-
     return (
         <>
             <div key={post.id} className={styles.card}>
@@ -48,8 +31,10 @@ const Post = ({post, onLike, onComment}) => {
                 <p>{formatDate(post.createdAt)}</p>
                 <p>{post.content}</p>
 
-                <p>Likes: {post.usersLiked.length}</p>
-                <button onClick={() => onLike(post.id)} className={styles.likeButton}>Like Post</button>
+                <div className={styles.likesDiv}>
+                    <p>Likes: {post.usersLiked.length}</p>
+                    <button onClick={() => onLike(post.id)} className={styles.likeButton}>Like Post</button>
+                </div>
 
                 <form method="POST" onSubmit={(event) => {
                     event.preventDefault();
