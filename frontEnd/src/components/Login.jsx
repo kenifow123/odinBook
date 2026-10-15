@@ -31,6 +31,29 @@ const Login = () => {
         localStorage.setItem("user", JSON.stringify(data.user));
         navigate('/home')
     }
+
+    const handleGuestLogin = async () => {
+        const response = await fetch(`${url}/api/account/login`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "username" : 'a',
+                "password" : 'a',
+            })
+        })
+
+        const data = await response.json();
+        console.log(data);
+        console.log('login success');
+        setJwt(data.token);
+        setUser(data.user);
+
+        localStorage.setItem('jwt', data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        navigate('/home')
+    }
     return (
         <div>
             <h1>Login</h1>
@@ -40,6 +63,8 @@ const Login = () => {
                 <label htmlFor="password">Password:<input type="text" name="password"/></label>
                 <button>Submit</button>
             </form>
+
+            <button onClick={handleGuestLogin}>Guest Login</button>
         </div>
     )
 }
