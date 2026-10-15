@@ -23,9 +23,10 @@ const AllUsers = () => {
         }
 
         const getCurrFollowRequests = async () => {
-            const response = await fetch(`${url}/api/account/currFollowRequests`, {
+            const response = await fetch(`${url}/api/account/getFollowRequests`, {
                 headers: {
                     Authorization: `Bearer ${jwt}`,
+                    'Content-Type': 'application/json'
                 }
             })
             const data = await response.json();
@@ -64,8 +65,10 @@ const AllUsers = () => {
                         {currUser.followedBy.find(follower => follower.id === user.id) ? (
                             <p>Already Following</p>
                         ) : currFollowRequests.find((request) =>
-                            request.requesterId === user.id &&
-                            request.requestedId === currUser.id
+                            (request.requesterId === user.id &&
+                            request.requestedId === currUser.id) ||
+                            (request.requesterId === currUser.id &&
+                            request.requestedId === user.id)
                         ) || requestSent.includes(currUser.id) ? ( <p>Request Already Sent</p>
                         ) : (
                                 <button onClick={() => handleSendRequest(currUser.id)}>

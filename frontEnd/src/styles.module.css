@@ -7,6 +7,7 @@
 
 body {
     margin: 0;
+    background-color: lightgray;
 }
 
 a {
@@ -121,12 +122,13 @@ h1 {
     height: 100vh;
 }
 
-.allUsersContainer, .createPostContainer, .postsContainer, .homeContainer {
+.allUsersContainer, .createPostContainer, .postsContainer, .homeContainer, .followRequestsContainer {
     display: flex;
     flex-direction: column;
     gap: 20px;
     align-items: center;
     background-color: lightgray;
+
 }
 
 .allUsersDiv {
@@ -146,4 +148,7 @@ h1 {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+.followRequestsContainer {
 }

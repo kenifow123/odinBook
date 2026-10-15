@@ -7,6 +7,7 @@ import Authenticated from './components/Authenticated.jsx'
 import AllUsers from "./components/AllUsers.jsx";
 import CreatePost from "./components/CreatePost.jsx";
 import Profile from './components/Profile.jsx'
+import FollowRequests from "./components/FollowRequests.jsx";
 
 const routes = [
     {
@@ -42,6 +43,10 @@ const routes = [
             {
                 path: '/profile',
                 element: <Profile/>
+            },
+            {
+                path: '/followRequests',
+                element: <FollowRequests/>,
             }
 
         ]

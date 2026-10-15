@@ -83,7 +83,7 @@ const acceptFollowPut = async (req, res) => {
             id: Number(req.user.id),
         },
         data: {
-            followedBy: {
+            following: {
                 connect: {
                     id: Number(req.params.followerUserId),
                 }
@@ -132,14 +132,47 @@ const allUsersGet = async (req, res) => {
 const currUserFollowRequestsGet = async (req, res) => {
     const followRequests = await prisma.followRequest.findMany({
         where: {
-            requesterId: req.user.id,
+            OR: [
+                {requesterId: req.user.id} ,
+                {requestedId: req.user.id}
+            ]
         },
         include: {
             requested: true,
+            requester: true,
         }
     })
 
     res.json(followRequests);
+}
+
+const requestedUserFollowRequestsGet = async (req, res) => {
+    console.log(req.user);
+    const followRequests = await prisma.followRequest.findMany({
+        where : {
+            requestedId: req.user.id,
+        },
+        include: {
+            requested: true,
+            requester: {
+                include: {
+                    profile: true,
+                }
+            }
+        }
+    })
+
+    res.json(followRequests);
+}
+
+const followRequestDelete = async (req, res) => {
+    const followRequest = await prisma.followRequest.delete({
+        where: {
+            id: Number(req.params.id),
+        }
+    })
+
+    res.json({message: 'deleted follow request'})
 }
 
 module.exports = {
@@ -150,4 +183,6 @@ module.exports = {
     AfollowBPut,
     allUsersGet,
     currUserFollowRequestsGet,
+    requestedUserFollowRequestsGet,
+    followRequestDelete
 };

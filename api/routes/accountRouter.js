@@ -8,8 +8,10 @@ accountRouter.post("/login", accountController.loginPost);
 accountRouter.post("/createFollowRequest/:requestedUserId", passport.authenticate("jwt", { session : false}), accountController.followRequestPost);
 accountRouter.put("/acceptFollow/:followerUserId", passport.authenticate("jwt", { session : false}), accountController.acceptFollowPut);
 accountRouter.get("/allUsers", passport.authenticate("jwt", { session : false}), accountController.allUsersGet);
-accountRouter.get("/currFollowRequests", passport.authenticate("jwt", { session : false}), accountController.currUserFollowRequestsGet);
+accountRouter.get("/getFollowRequests", passport.authenticate("jwt", { session : false}), accountController.currUserFollowRequestsGet);
+accountRouter.get("/requestedUserFollowRequests", passport.authenticate("jwt", { session : false}), accountController.requestedUserFollowRequestsGet)
 
+accountRouter.delete("/deleteFollowRequest/:id", accountController.followRequestDelete)
 //dev use route
 accountRouter.put("/AfollowB/:followerUserId/:currUserId", accountController.AfollowBPut);
 
