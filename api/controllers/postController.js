@@ -128,6 +128,16 @@ const findCommentsGet = async (req, res) => {
     })
 }
 
+const deletePostDelete = async (req, res) => {
+    const response = await prisma.post.delete({
+        where: {
+            id: Number(req.params.postId),
+        }
+    })
+
+    res.json('deleted', response);
+}
+
 module.exports = {
     createPostPost,
     allFollowedPostsGet,
@@ -135,4 +145,5 @@ module.exports = {
     createCommentPost,
     likeCommentPut,
     findCommentsGet,
+    deletePostDelete
 }
